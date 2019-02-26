@@ -39,14 +39,12 @@ class BeeswaxRightPerson(BaseAPI):
         """
         return self._call('GET', params=kwargs).json()
 
-    def create(self, name, **kwargs):
+    def create(self, **kwargs):
         """
-        :type name: str
         :type kwargs: dict
         :rtype: dict
         """
-        parameters = dict(account_name=name, **kwargs)
-        return self._call('POST', json=parameters).json()
+        return self._call('POST', json=kwargs).json()
 
     # noinspection PyShadowingBuiltins
     def update(self, id, **kwargs):
@@ -87,14 +85,12 @@ class BeeswaxXCM(BaseAPI):
         """
         return self._call('GET', json=kwargs).json()
 
-    def create(self, name, **kwargs):
+    def create(self, **kwargs):
         """
-        :type name: str
         :type kwargs: dict
         :rtype: dict
         """
-        parameters = dict(account_name=name, **kwargs)
-        return self._call('POST', json=parameters).json()
+        return self._call('POST', json=kwargs).json()
 
     # noinspection PyShadowingBuiltins
     def update(self, id, **kwargs):

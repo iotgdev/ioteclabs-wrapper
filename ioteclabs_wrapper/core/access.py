@@ -49,7 +49,6 @@ class LabsDAL(object):
         :rtype: requests.Response
         """
         url = self.url + '/'.join(map(unicode, paths))
-        print(url)
 
         call_func = getattr(self.session, method.lower())
         response = call_func(url, **kwargs)

@@ -38,7 +38,7 @@ class Account(BaseAPI):
         :type kwargs: dict
         :rtype: dict
         """
-        parameters = dict(account_name=name, **kwargs)
+        parameters = dict(name=name, **kwargs)
         return self._call('POST', json=parameters).json()
 
     # noinspection PyShadowingBuiltins
