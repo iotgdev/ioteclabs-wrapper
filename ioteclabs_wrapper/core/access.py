@@ -53,7 +53,7 @@ class LabsDAL(object):
         call_func = getattr(self.session, method.lower())
         response = call_func(url, **kwargs)
 
-        if response.status_code == requests.codes.ok:
+        if response.status_code in (requests.codes.ok, requests.codes.accepted, requests.codes.created):
             return response
         else:
             raise get_exception(response)

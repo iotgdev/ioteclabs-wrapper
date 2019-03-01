@@ -38,7 +38,8 @@ class LabsABCMeta(ABCMeta):
             except LabsException:
                 raise
             except Exception as e:
-                raise LabsException(e)
+                # noinspection PyCompatibility
+                raise LabsException('ioteclabs api raised an exception') from e
         return new_func
 
 

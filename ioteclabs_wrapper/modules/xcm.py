@@ -40,14 +40,21 @@ class XCM(BaseAPI):
         """
         files = {}
         params = kwargs.pop('params', {})
+        kwargs['name'] = name
 
-        if any(isinstance(value, bytes) for key, value in kwargs.items()):
-            files = {key: (key, value) for key, value in kwargs.items()}
-            files['name'] = ('name', name)
+        for key, value in list(kwargs.items()):
+            if isinstance(value, bytes):
+                files[key] = (key, value)
+                del kwargs[key]
 
-        call_kwargs = {'files': files} if files else {'json': kwargs}
+        resp = self._call('POST', params=params, json=kwargs).json()
+        model_id = resp['id']
 
-        return self._call('POST', params=params, **call_kwargs).json()
+        for filename, filevalue in files.items():
+            uploaded_files = {'id': (None, model_id), filename: filevalue}
+            resp[filename] = self._call('PATCH', params=params, files=uploaded_files).json()[filename]
+
+        return resp
 
     # noinspection PyShadowingBuiltins
     def update(self, id, **kwargs):
@@ -58,14 +65,20 @@ class XCM(BaseAPI):
         """
         files = {}
         params = kwargs.pop('params', {})
+        kwargs['id'] = id
 
-        if any(isinstance(value, bytes) for key, value in kwargs.items()):
-            files = {key: (key, value) for key, value in kwargs.items()}
-            files['id'] = ('id', id)
+        for key, value in list(kwargs.items()):
+            if isinstance(value, bytes):
+                files[key] = (key, value)
+                del kwargs[key]
 
-        call_kwargs = {'files': files} if files else {'json': kwargs}
+        resp = self._call('PATCH', params=params, json=kwargs).json()
 
-        return self._call('PUT', params=params, **call_kwargs).json()
+        for filename, filevalue in files.items():
+            uploaded_files = {'id': (None, id), filename: filevalue}
+            resp[filename] = self._call('PATCH', params=params, files=uploaded_files).json()[filename]
+
+        return resp
 
     # noinspection PyShadowingBuiltins
     def delete(self, id):
