@@ -41,8 +41,8 @@ class RightPerson(BaseAPI):
         files = {}
         params = kwargs.pop('params', {})
 
-        if any(isinstance(value, bytes) for key, value in kwargs):
-            files = {key: (key, value) for key, value in kwargs}
+        if any(isinstance(value, bytes) for key, value in kwargs.items()):
+            files = {key: (key, value) for key, value in kwargs.items()}
             files['name'] = ('name', name)
 
         call_kwargs = {'files': files} if files else {'json': kwargs}
@@ -59,8 +59,8 @@ class RightPerson(BaseAPI):
         files = {}
         params = kwargs.pop('params', {})
 
-        if any(isinstance(value, bytes) for key, value in kwargs):
-            files = {key: (key, value) for key, value in kwargs}
+        if any(isinstance(value, bytes) for key, value in kwargs.items()):
+            files = {key: (key, value) for key, value in kwargs.items()}
             files['id'] = ('id', id)
 
         call_kwargs = {'files': files} if files else {'json': kwargs}
