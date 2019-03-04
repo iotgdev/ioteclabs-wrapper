@@ -40,7 +40,7 @@ class LabsABCMeta(ABCMeta):
             except Exception as e:
                 try:
                     # noinspection PyCompatibility
-                    raise LabsException('ioteclabs api raised an exception') from e
+                    exec("raise LabsException('ioteclabs api raised an exception') from e")
                 except SyntaxError:  # 2to3
                     raise LabsException(str(e))
         return new_func
