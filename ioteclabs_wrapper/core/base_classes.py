@@ -7,6 +7,7 @@ Components in this module should not be used but built upon
 from __future__ import unicode_literals
 
 from abc import ABCMeta, abstractmethod
+import sys
 
 from ioteclabs_wrapper.core.exceptions import LabsException
 
@@ -15,7 +16,7 @@ try:
 except ImportError:
     from functools import wraps
 
-from six import with_metaclass
+from six import with_metaclass, reraise
 
 
 class LabsABCMeta(ABCMeta):
@@ -38,11 +39,7 @@ class LabsABCMeta(ABCMeta):
             except LabsException:
                 raise
             except Exception as e:
-                try:
-                    # noinspection PyCompatibility
-                    exec("raise LabsException('ioteclabs api raised an exception') from e")
-                except SyntaxError:  # 2to3
-                    raise LabsException(str(e))
+                reraise(LabsException, LabsException(e), sys.exc_info()[2])
         return new_func
 
 
