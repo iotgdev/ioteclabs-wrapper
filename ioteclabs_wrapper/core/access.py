@@ -5,6 +5,8 @@ iotec labs API access classes
 """
 from __future__ import unicode_literals
 
+import logging
+
 import requests
 
 from ioteclabs_wrapper.core.exceptions import get_exception, LabsNotAuthenticated
@@ -18,6 +20,9 @@ except NameError:  # 2to3
 
 
 LABS_DAL = None
+
+
+logger = logging.getLogger('ioteclabs_wrapper.core.access')
 
 
 class LabsDAL(object):
@@ -93,6 +98,9 @@ class LabsDAL(object):
             return self._call(method, paths, **kwargs)
         except LabsNotAuthenticated:
             self.authenticate(self.username, self.password)
+            return self.call(method, paths, **kwargs)
+        except requests.exceptions.ConnectTimeout:
+            logger.warning('conntection timeout for %s request at %s', method, paths)
             return self.call(method, paths, **kwargs)
 
 
