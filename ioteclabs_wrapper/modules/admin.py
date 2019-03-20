@@ -41,4 +41,4 @@ class Authentication(BaseAPI):
         :type account: str
         :rtype: dict
         """
-        return self._dal.call('PATCH', self.paths + ['masquerade'], json={'account', account}).json()
+        return self._dal.call('PATCH', self.paths + ['masquerade'], json={'account': account}).json()

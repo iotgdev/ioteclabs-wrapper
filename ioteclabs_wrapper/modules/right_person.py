@@ -3,6 +3,8 @@
 """
 classes to access iotec labs API right-person services
 """
+import six
+
 from ioteclabs_wrapper.core.base_classes import BaseAPI
 
 
@@ -43,7 +45,7 @@ class RightPerson(BaseAPI):
         kwargs['name'] = name
 
         for key, value in list(kwargs.items()):
-            if isinstance(value, bytes):
+            if isinstance(value, bytes) and str(value) != value:  # python 2 to 3 compatibility
                 files[key] = (key, value)
                 del kwargs[key]
 
@@ -68,7 +70,7 @@ class RightPerson(BaseAPI):
         kwargs['id'] = id
 
         for key, value in list(kwargs.items()):
-            if isinstance(value, bytes):
+            if isinstance(value, bytes) and str(value) != value:  # python 2 to 3 compatibility
                 files[key] = (key, value)
                 del kwargs[key]
 

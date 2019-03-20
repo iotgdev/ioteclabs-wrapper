@@ -43,7 +43,7 @@ class XCM(BaseAPI):
         kwargs['name'] = name
 
         for key, value in list(kwargs.items()):
-            if isinstance(value, bytes):
+            if isinstance(value, bytes) and str(value) != value:  # python 2 to 3 compatibility
                 files[key] = (key, value)
                 del kwargs[key]
 
@@ -68,7 +68,7 @@ class XCM(BaseAPI):
         kwargs['id'] = id
 
         for key, value in list(kwargs.items()):
-            if isinstance(value, bytes):
+            if isinstance(value, bytes) and str(value) != value:  # python 2 to 3 compatibility
                 files[key] = (key, value)
                 del kwargs[key]
 
