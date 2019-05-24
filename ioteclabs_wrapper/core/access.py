@@ -8,10 +8,11 @@ from __future__ import unicode_literals
 import logging
 
 import requests
+from retrying import retry
 
 from ioteclabs_wrapper.core.exceptions import get_exception, LabsNotAuthenticated
 from ioteclabs_wrapper.credentials.credential_manager import get_labs_credentials
-from ioteclabs_wrapper.modules import account, admin, beeswax, right_person, xcm
+from ioteclabs_wrapper.modules import account, admin, beeswax, right_person, xcm, user
 
 try:
     unicode = unicode
@@ -48,6 +49,7 @@ class LabsDAL(object):
             self._session = requests.Session()
         return self._session
 
+    @retry(stop_max_attempt_number=3)
     def _call(self, method, paths, **kwargs):
         """
         returns the results of an endpoint _call
@@ -99,9 +101,6 @@ class LabsDAL(object):
         except LabsNotAuthenticated:
             self.authenticate(self.username, self.password)
             return self.call(method, paths, **kwargs)
-        except requests.exceptions.ConnectTimeout:
-            logger.warning('conntection timeout for %s request at %s', method, paths)
-            return self.call(method, paths, **kwargs)
 
 
 def get_labs_dal():
@@ -125,6 +124,7 @@ class LabsAPI(object):
         """
         self._dal = dal
         self.accounts = account.Account(self._dal)
+        self.users = user.User(self._dal)
         self.authentication = admin.Authentication(self._dal)
         self.beeswax = beeswax.Beeswax(self._dal)
         self.right_person = right_person.RightPerson(self._dal)

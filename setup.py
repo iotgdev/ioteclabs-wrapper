@@ -53,6 +53,7 @@ setup(
         'keyring==15.1.0',
         'requests>=2.19.1',
         'boltons>=18.0.0; python_version<"3.0"',
-        'six>=1.11.0'
+        'six>=1.11.0',
+        'retrying'
     ]
 )
