@@ -16,6 +16,33 @@ class Beeswax(BaseAPI):
         self.right_person = BeeswaxRightPerson(self._dal)
         self.xcm = BeeswaxXCM(self._dal)
 
+    # noinspection PyShadowingBuiltins
+    def retrieve(self, id, **kwargs):
+        """
+        :type id: str
+        :type kwargs: dict
+        :rtype: dict
+        """
+        parameters = dict(id=id, **kwargs)
+        return self._call('GET', params=parameters).json()
+
+    def list(self, **kwargs):
+        """
+        :type kwargs: dict
+        :rtype: dict
+        """
+        return self._call('GET', params=kwargs).json()
+
+    # noinspection PyShadowingBuiltins
+    def update(self, id, **kwargs):
+        """
+        :type id: str
+        :type kwargs: dict
+        :rtype: dict
+        """
+        parameters = dict(id=id, **kwargs)
+        return self._call('PUT', json=parameters).json()
+
 
 class BeeswaxRightPerson(BaseAPI):
     """iotec labs API beeswax right-person endpoint class"""
