@@ -103,14 +103,14 @@ class BeeswaxXCM(BaseAPI):
         :rtype: dict
         """
         parameters = dict(id=id, **kwargs)
-        return self._call('GET', json=parameters).json()
+        return self._call('GET', params=parameters).json()
 
     def list(self, **kwargs):
         """
         :type kwargs: dict
         :rtype: dict
         """
-        return self._call('GET', json=kwargs).json()
+        return self._call('GET', params=kwargs).json()
 
     def create(self, **kwargs):
         """
